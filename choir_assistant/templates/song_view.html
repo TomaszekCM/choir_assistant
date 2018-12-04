@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Choir assistant - dodawanie wydarzenia
+{% endblock %}
+
+
+{% block page_info %}
+
+    Szczegóły utworów
+
+{% endblock %}
+
+{% block content %}
+
+
+    <p><h4>Tytuł:</h4> {{ song.name }} </p>
+    <p><h4>Kompozytor:</h4> {{ song.composer }} </p>
+    <p><h4>Opis:</h4> {{ song.description }} </p>
+    <p><h4>Głosy:</h4> <ul> {% for i in song.voices %} <li> {{ i }} </li> {% endfor %} </ul> </p>
+
+
+    <br>
+    <br>
+    {% if user_voice %}
+        <p> W tym utworze śpiewasz głosem: {{ user_voice.voice }}</p>
+
+    {% elif alert %}
+        {% if song.voices %}
+        <p>{{ alert }}</p><br>
+
+        <form method="post">
+        {% csrf_token %}
+
+        <select name="voice">
+            {% for i in song.voices %}
+
+                <option value="{{ i }}">{{ i }}</option>
+
+            {% endfor %}
+        </select>
+        <input type="submit" value="Zapisz">
+        </form>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}

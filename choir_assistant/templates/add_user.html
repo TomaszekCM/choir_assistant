@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Choir assistant - dodawanie wydarzenia
+{% endblock %}
+
+
+{% block page_info %}
+
+    Dodawanie użytkownika
+
+{% endblock %}
+
+{% block content %}
+
+        {% if warning %}
+
+            <p><h4>{{ warning }}</h4></p><br><br>
+
+        {% endif %}
+
+    
+        <form method="post" class="login_class">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Stwórz użytkownika">
+        </form>
+    
+
+{% endblock %}

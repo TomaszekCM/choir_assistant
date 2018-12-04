@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Choir assistant - dodawanie wydarzenia
+{% endblock %}
+
+
+{% block page_info %}
+
+    Lista utworów
+
+{% endblock %}
+
+{% block content %}
+
+
+    <ol>
+
+    {% for song in all_songs %}
+
+        <p><li><a href="../song/{{ song.id }}">{{ song.name }}  ({{ song.composer }})</a></li></p>
+
+    {% endfor %}
+
+
+    </ol>
+
+
+{% endblock %}

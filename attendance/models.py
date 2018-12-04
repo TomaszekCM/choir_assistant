@@ -4,7 +4,7 @@ from django.db import models
 
 
 
-class User_ext(models.Model):
+class UserExt(models.Model):
     """additional user information"""
     phone = models.CharField(max_length=20)
     picture = models.ImageField(null=True)
@@ -13,20 +13,24 @@ class User_ext(models.Model):
 
 class Event(models.Model):
     """details of the specific event"""
+    name = models.CharField(max_length=255)
     date = models.DateField()
     start_hour = models.TimeField()
-    end_hour = models.TimeField()
+    end_hour = models.TimeField(null=True)
     place = models.CharField(max_length=255)
-    description = models.CharField(max_length=255)
+    description = models.TextField(null=True)
     songs = models.ManyToManyField('Song')
+
+
+DECLARATIONS = ((-2, "Nieusprawiedliwiony występ"),(-1, "Nieusprawiedliwione"),
+                                           (0, "Nie będzie"), (0.75, "Spóźni się"), (1, "Będzie)"))
 
 
 class Attendance(models.Model):
     """choir member's declaration on his presence"""
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     person = models.ForeignKey(User, on_delete=models.CASCADE)
-    be_or_not = models.FloatField(choices=((-2, "Nieusprawiedliwiony występ"),(-1, "Nieusprawiedliwione"),
-                                           (0, "Nie będzie"), (0.75, "Spóźni się"), (1, "Będzie)")), default=1, null=False)
+    declaration = models.FloatField(choices=DECLARATIONS, default=1, null=False)
     comment = models.CharField(max_length=255)
     date_of_declaration = models.DateTimeField(auto_now=True)
 
@@ -43,13 +47,17 @@ class Song(models.Model):
     """each song on choir's repertoire"""
     name = models.CharField(max_length=255)
     composer = models.CharField(max_length=255, null=True)
+    description = models.CharField(max_length=255, null=True)
     scores = models.FileField(null=True)
-    yt_link = models.TextField()
-    voices = ArrayField(models.CharField(choices=VOICES))  # list of voices avaliable for the specific song
+    yt_link = models.TextField(null=True)
+    voices = ArrayField(models.CharField(choices=VOICES, max_length=255), null=True)  # list of voices avaliable for the specific song
 
 
-class User_song(models.Model):
+    def __str__(self):
+        return self.name + "  (" + self.composer + ")"
+
+class UserSong(models.Model):
     """model capturing each singer's choice for the specific song"""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
-    voice = models.CharField(choices=VOICES)   # user will be allowed to use only one of the voices. Form will contain only choices from the Song model.
+    voice = models.CharField(choices=VOICES, max_length=255)   # user will be allowed to use only one of the voices. Form will contain only choices from the Song model.

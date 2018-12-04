@@ -1,29 +1,27 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
 
+    <title>Choir assistant - logowanie</title>
 
-{% block title %}
-    Choir assistant - logowanie
-{% endblock %}
-
-
-{% block content %}
-
-{#    {% if user.is_authenticated %}#}
+{#<style>#}
 {##}
+{#.login_class {#}
+{#    right: 500px;#}
 {##}
-{##}
-{#        <a href="{% url 'reset_passwd' user.id %}">Zmień hasło</a>#}
-{##}
-{##}
-{#    {% else %}#}
+{#</style>#}
+
+</head>
+<body>
 
 
-        <form method="post">
+        <form method="post" class="login_class">
             {% csrf_token %}
             {{ form }}
             <input type="submit" value="Zaloguj">
         </form>
 
-{#    {% endif %}#}
 
-{% endblock %}
+</body>
+</html>

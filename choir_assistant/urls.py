@@ -17,11 +17,18 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path
 
-from attendance.views import login_view, logout_view, home_view
+from attendance.views import login_view, logout_view, home_view, add_event_view, add_user_view, add_song_view, \
+    all_songs_vies, song_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^$', login_view.as_view(), name="login"),
     url(r'^logout$', logout_view, name="logout"),
-    url(r'^home$', home_view.as_view(), name="home")
+    url(r'^home$', home_view.as_view(), name="home"),
+    url(r'^add_event$', add_event_view.as_view(), name="add_event"),
+    url(r'^add_user$', add_user_view.as_view(), name="add_user"),
+    url(r'^add_song$', add_song_view.as_view(), name="add_song"),
+    url(r'^all_songs$', all_songs_vies.as_view(), name="all_songs"),
+    url(r'^song/(?P<song_id>(\d)+)$', song_view.as_view(), name="song")
+
 ]

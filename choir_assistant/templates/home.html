@@ -1,13 +1,97 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+{#    name="viewport" content="width=device-width, initial-scale=1"    - TO BYŁO W META#}
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+/* Create column that floats to the left*/
+.column {
+    float: left;
+    width: 10%;
+    padding: 10px;
+    height: 90vh; /* Should be removed. Only for demonstration */
+    align-items: center;
+    border-style: solid;
+}
+
+.column2 {
+    float: right;
+    width: 90%;
+    padding: 10px;
+    height: 90vh; /* Should be removed. Only for demonstration */
+}
 
 
-{% block title %}
-    Choir assistant - logowanie
-{% endblock %}
+.center {
+    align-self: center;
+}
 
 
-{% block content %}
 
-Jesteś zalogowany
+</style>
+</head>
+<body>
 
-{% endblock %}
+<h2 class="center">{% block title %}Two Equal Columns{% endblock %}</h2>
+
+<div class="column" style="background-color:#aaa;">
+    <h2>Menu</h2><br><br>
+    {% block menu %}
+
+        <p><a href="">Wydarzenia</a></p><br>
+{#        {% url 'events' %}#}
+        <p><a href="">Utwory</a></p><br>
+{#        {% url 'songs' %}#}
+        <p><a href="">Chórzyści</a></p><br>
+{#        {% url 'members' %}#}
+        <p><a href="">Moje dane</a></p><br>
+{#        {% url 'profile' %}#}
+
+        <br><br><br><br><br>
+
+        <p><a href="{% url 'logout' %}">Wyloguj</a></p>
+
+
+
+    {% endblock %}
+</div>
+
+
+<div class="column2">
+    {% block content %}
+{#        <h2>Column 2</h2>#}
+{#        <p>Some text..</p>#}
+    {% endblock %}
+</div>
+
+
+<footer>Zalogowany użytkownik: {{ user.username }}</footer>
+
+</body>
+</html>
+
+
+
+
+
+
+{##}
+{#{% extends "base.html" %}#}
+{##}
+{##}
+{#{% block title %}#}
+{#    Choir assistant - logowanie#}
+{#{% endblock %}#}
+{##}
+{##}
+{#{% block content %}#}
+{##}
+{#Jesteś zalogowany#}
+{##}
+{#{% endblock %}#}

@@ -2,17 +2,112 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+{#    name="viewport" content="width=device-width, initial-scale=1"    - TO BYŁO W META#}
+
     <title>{% block title %}Choir assistant{% endblock %}</title>
 
+<style>
 
+* {
+    box-sizing: border-box;
+}
+/* Create column that floats to the left*/
+.column {
+    float: left;
+    width: 10%;
+    padding: 10px;
+    height: 90vh; /* Should be removed. Only for demonstration */
+    align-items: center;
+    border-style: solid;
+}
+
+.column2 {
+    float: right;
+    width: 90%;
+    padding: 10px;
+    height: 90vh; /* Should be removed. Only for demonstration */
+}
+
+
+.center {
+    align-self: center;
+}
+
+
+
+</style>
 </head>
-
 <body>
 
-    {% block content %}
+<h2 class="center">{% block page_info %}Choir assistant{% endblock %}</h2>
+
+<div class="column" style="background-color:#aaa;">
+    <h2>Menu</h2><br><br>
+    {% block menu %}
+
+        <p><a href="">Wydarzenia</a></p><br>
+{#        {% url 'events' %}#}
+        <p><a href="{% url "all_songs" %}">Utwory</a></p><br>
+{#        {% url 'songs' %}#}
+        <p><a href="">Chórzyści</a></p><br>
+{#        {% url 'members' %}#}
+        <p><a href="">Moje dane</a></p><br>
+{#        {% url 'profile' %}#}
+
+        <br><br><br><br><br>
+
+        <p><a href="{% url 'logout' %}">Wyloguj</a></p>
+
+
 
     {% endblock %}
+</div>
 
-   <footer>{{ user.username }}{% if user.is_authenticated %}  |  <a href="{% url 'logout' %}">Wyloguj</a>{% endif %}</footer>
+
+<div class="column2">
+    {% block content %}
+{#        <h2>Column 2</h2>#}
+{#        <p>Some text..</p>#}
+    {% endblock %}
+</div>
+
+
+<footer>Zalogowany użytkownik: {{ user.username }}</footer>
+
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>{% block title %}Choir assistant{% endblock %}</title>#}
+{##}
+{##}
+{#</head>#}
+{##}
+{#<body>#}
+{##}
+{#    {% block content %}#}
+{##}
+{#    {% endblock %}#}
+{##}
+{#   <footer>{{ user.username }}{% if user.is_authenticated %}  |  <a href="{% url 'logout' %}">Wyloguj</a>{% endif %}</footer>#}
+{#</body>#}
+{#</html>#}
