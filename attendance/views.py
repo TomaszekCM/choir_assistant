@@ -196,3 +196,90 @@ class current_events_view(View):
     def get(self, request):
         all_events = Event.objects.all()
         return render(request, "all_events.html", {"events":all_events})
+
+
+class user_view(View):
+    """Specific user's details. Logged user and admin can see links to change details"""
+    def get(self, request, user_id):
+        specific_user = User.objects.get(pk = user_id)
+        try:
+            specific_user_ext = UserExt.objects.get(user=specific_user)
+            return render(request, "user_view.html",
+                          {"specific_user": specific_user, "specific_user_ext": specific_user_ext})
+
+        except:
+            return render(request, "user_view.html",
+                          {"specific_user": specific_user})
+
+
+class user_details_change_view(View):
+    """Changing user's details"""
+    def get(self, request, user_id):
+        user = request.user
+        # print("id użytkownika to: ")
+        # print(user.id)
+        # print(user_id)
+        if user.is_superuser or user.id == user_id:  # WHY IT WORKS ONLY FOR SUPERUSERS!?!?!?!?!
+            specific_user = User.objects.get(pk=user_id)
+            try:
+                specific_user_ext = UserExt.objects.get(user=specific_user)
+                return render(request, "change_user_details.html", {"specific_user":specific_user, "specific_user_ext":specific_user_ext})
+            except:
+                return render(request, "change_user_details.html", {"specific_user": specific_user})
+        else:
+            return HttpResponse("Nie twoje - nie dotykaj!")
+
+    def post(self, request, user_id):
+        user = request.user
+        edited_user = User.objects.get(pk=user_id)
+        new_name = request.POST['name']
+        new_first = request.POST['first']
+        new_last = request.POST['last']
+        new_mail = request.POST['email']
+        new_phone = request.POST['phone']
+        # try:
+        #     admin = request.POST['admin']
+        #     print(admin)
+        # except:
+        #     adminn = False
+        #     print(adminn)
+        try:
+            User.objects.get(username=new_name)
+            alert = "Taki użytkownik już istnieje"
+            try:
+                specific_user_ext = UserExt.objects.get(user=edited_user)
+                return render(request, "change_user_details.html", {"specific_user":edited_user, "specific_user_ext":specific_user_ext, "alert":alert})
+            except:
+                return render(request, "change_user_details.html", {"specific_user": edited_user, "alert":alert})
+
+        except:
+            if user.is_superuser or user.id == user_id:
+                if new_name:
+                    edited_user.username = new_name
+                    edited_user.save()
+                if new_first:
+                    edited_user.first_name = new_first
+                    edited_user.save()
+                if new_last:
+                    edited_user.last_name = new_last
+                    edited_user.save()
+                if new_mail:
+                    edited_user.email = new_mail
+                    edited_user.save()
+                if new_phone:
+                    try:
+                        edited_user_ext = UserExt.objects.get(user=edited_user)
+                        edited_user_ext.phone = new_phone
+                    except:
+                        UserExt.objects.create(phone=new_phone, user=edited_user)
+
+                # if user.is_superuser:
+                #     if admin:
+                #         if admin:
+                #             edited_user.is_superuser = True
+                #             edited_user.save()
+                        # else:
+                        #     edited_user.is_superuser = False
+                        #     edited_user.save()
+            return redirect('all_users')
+

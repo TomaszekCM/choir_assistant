@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Choir assistant - dodawanie wydarzenia
+{% endblock %}
+
+
+{% block page_info %}
+
+    Szczegóły utworów
+
+{% endblock %}
+
+{% block content %}
+
+
+    <p><strong>Imię:</strong> {{ specific_user.first_name }} </p><br>
+    <p><strong>Nazwisko:</strong> {{ specific_user.last_name }} </p><br>
+    <p><strong>Nazwa użytkownika:</strong> {{ specific_user.username }} </p><br>
+    <p><strong>Adres email:</strong> {{ specific_user.email }} </p><br>
+    <p><strong>Numer telefonu:</strong> {{ specific_user_ext.phone }} </p><br>
+{#    <p><h4>Numer telefonu:</h4> {{ specific_user_ext.picture }} </p>       - this will be added in the future#}
+    {% if specific_user.is_superuser %}<p><h6>Użytkownik na prawach administratora</h6></p>{% endif %}
+    <br>
+    <br>
+    <br>
+
+
+
+    {% if user.id == specific_user.id or user.is_superuser %}
+
+        <h5><a href="{{ specific_user.id }}/change">Edytuj dane</a>  |
+        <a>Zmień hasło</a></h5><br>
+
+
+    {% endif %}
+
+
+
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Choir assistant - dodawanie wydarzenia
+{% endblock %}
+
+
+{% block page_info %}
+
+    Dodawanie użytkownika
+
+{% endblock %}
+
+{% block content %}
+
+{% if alert %}
+
+    <p>{{ alert }}</p>
+
+    {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <label>Nazwa użytkownika:
+                <input type="text" maxlength="50" name="name" placeholder="{{ specific_user.username }}">
+            </label><br>
+            <label>Imię użytkownika:
+                <input type="text" maxlength="50" name="first" placeholder="{{ specific_user.first_name }}">
+            </label><br>
+            <label>Nazwisko użytkownika:
+                <input type="text" maxlength="50" name="last" placeholder="{{ specific_user.last_name }}">
+            </label><br>
+            <label>Email użytkownika:
+                <input type="email" name="email" placeholder="{{ specific_user.email }}">
+            </label><br>
+            <label>Telefon użytkownika:
+                <input type="text" maxlength="20" name="phone" placeholder="{{ specific_user_ext.phone }}">
+            </label><br>
+{#            {% if user.is_superuser %}#}
+{##}
+{#            <label>Nadać prawa administratora?#}
+{#                <input type="checkbox" name="admin">#}
+{#            </label><br>#}
+{##}
+{#            {% endif %}#}
+
+{#            once the above works, there will have to be a button to deactivate user!#}
+{#            all users view will have to be modified to show only active users (for normal users)#}
+{#              and all users (for superuser) #}
+
+
+            <input type="submit" value="Zapisz">
+        </form>
+
+
+{% endblock %}
