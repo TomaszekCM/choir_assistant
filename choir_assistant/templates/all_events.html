@@ -16,9 +16,9 @@
 
     <ol>
 
-    {% for song in all_songs %}
+    {% for event in events %}
 
-        <p><li><a href="../song/{{ song.id }}">{{ song.name }}  ({{ song.composer }}) </a></li></p>
+        <p><li><a href="../event/{{ event.id }}">{{ event.name }} ({{ event.place }})  -  {{ event.date }},  godzina {{ event.start_hour }}</a></li></p>
 
     {% endfor %}
 

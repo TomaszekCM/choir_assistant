@@ -43,7 +43,7 @@ def logout_view(request):
 class home_view(View):
     """Home page"""
     def get(self, request):
-        return render(request, "home.html")
+        return render(request, "base.html")
 
 
 class add_event_view(PermissionRequiredMixin, View):
@@ -147,7 +147,7 @@ class all_songs_vies(View):
 
 
 class song_view(View):
-    """Each song's details with user information about his one's - if no voice is assigned, user can assign himself"""
+    """Each song's details with user information about his one's and link to change his declaration"""
 
     def get(self, request, song_id):
         song = Song.objects.get(pk = song_id)
@@ -161,11 +161,38 @@ class song_view(View):
             alert = "Zadeklaruj jakim głosem śpiewasz!"
             return render(request, "song_view.html", {"song":song, "alert":alert})
 
-    def post(self,request, song_id):
+
+class song_declaration_view(View):
+    """As currently there is 'no front', it is easier to make such view"""
+    def get(self,request, song_id):
+        song = Song.objects.get(pk = song_id)
+        user = request.user
+        return render(request, "song_declaration.html", {"song":song, "user":user})
+
+    def post(self, request, song_id):
         song = Song.objects.get(pk=song_id)
         user = request.user
         voice = request.POST['voice']
 
-        user_voice = UserSong.objects.create(song_id=song_id, user=user, voice=voice)
+        try:
+            user_voice = UserSong.objects.filter(song_id=song_id).get(user=user)
+            user_voice.voice = voice
+            user_voice.save()
 
-        return render(request, "song_view.html", {"song": song, "user_voice": user_voice})
+        except:
+            UserSong.objects.create(song=song, user=user, voice=voice)
+
+        return HttpResponseRedirect("../%s" % song_id)
+
+
+class all_users_view(View):
+    """List of all users"""
+    def get(self, request):
+        all_users = User.objects.all().order_by("last_name")
+        return render(request, "all_users.html", {"users":all_users})
+
+
+class current_events_view(View):
+    def get(self, request):
+        all_events = Event.objects.all()
+        return render(request, "all_events.html", {"events":all_events})

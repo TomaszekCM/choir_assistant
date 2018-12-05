@@ -45,13 +45,22 @@
     <h2>Menu</h2><br><br>
     {% block menu %}
 
-        <p><a href="">Wydarzenia</a></p><br>
+        <br><p><a href="{% url "all_events" %}">Wydarzenia</a></p>
+        {% if user.is_superuser %}
+            <h6><a href="/add_event">Dodaj wydarzenie</a></h6>
+        {% endif %}
 {#        {% url 'events' %}#}
-        <p><a href="{% url "all_songs" %}">Utwory</a></p><br>
+        <br><p><a href="{% url "all_songs" %}">Utwory</a></p>
+        {% if user.is_superuser %}
+            <h6><a href="/add_song">Dodaj utwór</a></h6>
+        {% endif %}
 {#        {% url 'songs' %}#}
-        <p><a href="">Chórzyści</a></p><br>
+        <br><p><a href="{% url "all_users" %}">Chórzyści</a></p>
+        {% if user.is_superuser %}
+            <h6><a href="/add_user">Dodaj osobę</a></h6>
+        {% endif %}
 {#        {% url 'members' %}#}
-        <p><a href="">Moje dane</a></p><br>
+        <br><p><a href="">Moje dane</a></p>
 {#        {% url 'profile' %}#}
 
         <br><br><br><br><br>

@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 
 from attendance.views import login_view, logout_view, home_view, add_event_view, add_user_view, add_song_view, \
-    all_songs_vies, song_view
+    all_songs_vies, song_view, song_declaration_view, all_users_view, current_events_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,6 +29,9 @@ urlpatterns = [
     url(r'^add_user$', add_user_view.as_view(), name="add_user"),
     url(r'^add_song$', add_song_view.as_view(), name="add_song"),
     url(r'^all_songs$', all_songs_vies.as_view(), name="all_songs"),
-    url(r'^song/(?P<song_id>(\d)+)$', song_view.as_view(), name="song")
+    url(r'^song/(?P<song_id>(\d)+)$', song_view.as_view(), name="song"),
+    url(r'^song/(?P<song_id>(\d)+)/declare$', song_declaration_view.as_view(), name="song_declaration"),
+    url(r'^all_users$', all_users_view.as_view(), name="all_users"),
+    url(r'^all_events$', current_events_view.as_view(), name="all_events"),
 
 ]

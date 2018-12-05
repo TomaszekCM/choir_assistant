@@ -16,9 +16,10 @@
 
     <ol>
 
-    {% for song in all_songs %}
+    {% for user in users %}
 
-        <p><li><a href="../song/{{ song.id }}">{{ song.name }}  ({{ song.composer }}) </a></li></p>
+        <p><li><a href="../user/{{ user.id }}">{{ user.first_name }} {{ user.last_name }} ({{ user.username }}) -
+        {% if user.is_active %} aktywny {% else %} nieaktywny {% endif %}</a></li></p>
 
     {% endfor %}
 

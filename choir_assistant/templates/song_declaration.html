@@ -22,15 +22,20 @@
 
     <br>
     <br>
-    {%  if song.voices %}
-    {% if user_voice %}
-        <p>W tym utworze śpiewasz głosem: {{ user_voice.voice }}.</p> <h6><a href="{{ song.id }}/declare">( Zmień )</a></h6>
 
-    {% elif alert %}
 
-        <p><a href="{{ song.id }}/declare"> {{ alert }} </a></p><br>
+        <form method="post">
+        {% csrf_token %}
 
-    {% endif %}
-    {% endif %}
+        <select name="voice">
+            {% for i in song.voices %}
+
+                <option value="{{ i }}">{{ i }}</option>
+
+            {% endfor %}
+        </select>
+        <input type="submit" value="Zapisz">
+        </form>
+
 
 {% endblock %}
