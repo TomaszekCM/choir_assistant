@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Choir assistant - dodawanie wydarzenia
+{% endblock %}
+
+
+{% block page_info %}
+
+    Zmiana hasła dla użytkownika {{ user.username }} ({{ user.first_name }} {{ user.last_name }})
+
+{% endblock %}
+
+{% block content %}
+
+        {% if msg %}
+
+            <p><h4>{{ msg }}</h4></p><br><br>
+
+        {% endif %}
+
+
+        <form method="post" class="login_class">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Zmień">
+        </form>
+
+
+{% endblock %}

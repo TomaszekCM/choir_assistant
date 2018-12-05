@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User, Permission
@@ -5,7 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
 
-from attendance.forms import LoginForm, AddEventForm, AddUserForm, AddSongForm
+from attendance.forms import LoginForm, AddEventForm, AddUserForm, AddSongForm, PasswordChangeForm
 from attendance.models import Song, Event, UserExt, UserSong
 
 
@@ -69,7 +71,7 @@ class add_event_view(PermissionRequiredMixin, View):
             event = Event.objects.create(name=event_name, date=date, start_hour=start_hour, end_hour=end_hour, place=place, description=description)
             event.songs.set(songs)
 
-            return redirect('home')
+            return redirect('/all_events')
 
         return render(request, "add_event.html", {"form": form.as_p()})
 
@@ -188,14 +190,16 @@ class song_declaration_view(View):
 class all_users_view(View):
     """List of all users"""
     def get(self, request):
-        all_users = User.objects.all().order_by("last_name")
-        return render(request, "all_users.html", {"users":all_users})
+        all_active_users = User.objects.filter(is_active=True).order_by("last_name")
+        all_inactive_users = User.objects.filter(is_active=False).order_by("last_name")
+        return render(request, "all_users.html", {"users":all_active_users, "inactive_users":all_inactive_users})
 
 
 class current_events_view(View):
     def get(self, request):
-        all_events = Event.objects.all()
-        return render(request, "all_events.html", {"events":all_events})
+        all_events = Event.objects.filter(date__gte=datetime.now()).order_by("date")
+        previous_events = Event.objects.filter(date__lt=datetime.now()).order_by("-date")
+        return render(request, "all_events.html", {"events":all_events, "previous_events":previous_events})
 
 
 class user_view(View):
@@ -216,10 +220,10 @@ class user_details_change_view(View):
     """Changing user's details"""
     def get(self, request, user_id):
         user = request.user
-        # print("id użytkownika to: ")
-        # print(user.id)
-        # print(user_id)
-        if user.is_superuser or user.id == user_id:  # WHY IT WORKS ONLY FOR SUPERUSERS!?!?!?!?!
+        print("id użytkownika to: ")
+        print(user.id)
+        print(user_id)
+        if user.is_superuser or int(user.id) == int(user_id):  # WHY IT WORKS ONLY FOR SUPERUSERS!?!?!?!?!
             specific_user = User.objects.get(pk=user_id)
             try:
                 specific_user_ext = UserExt.objects.get(user=specific_user)
@@ -237,12 +241,22 @@ class user_details_change_view(View):
         new_last = request.POST['last']
         new_mail = request.POST['email']
         new_phone = request.POST['phone']
-        # try:
-        #     admin = request.POST['admin']
-        #     print(admin)
-        # except:
-        #     adminn = False
-        #     print(adminn)
+        admin = False
+        active = False
+
+        try:
+            admin = request.POST['admin']
+            admin = True
+        except:
+            pass
+        try:
+            active = request.POST['active']
+            active = True
+        except:
+            pass
+
+
+
         try:
             User.objects.get(username=new_name)
             alert = "Taki użytkownik już istnieje"
@@ -253,7 +267,7 @@ class user_details_change_view(View):
                 return render(request, "change_user_details.html", {"specific_user": edited_user, "alert":alert})
 
         except:
-            if user.is_superuser or user.id == user_id:
+            if user.is_superuser or int(user.id) == int(user_id):
                 if new_name:
                     edited_user.username = new_name
                     edited_user.save()
@@ -273,13 +287,52 @@ class user_details_change_view(View):
                     except:
                         UserExt.objects.create(phone=new_phone, user=edited_user)
 
-                # if user.is_superuser:
-                #     if admin:
-                #         if admin:
-                #             edited_user.is_superuser = True
-                #             edited_user.save()
-                        # else:
-                        #     edited_user.is_superuser = False
-                        #     edited_user.save()
+                if user.is_superuser:
+
+                    if admin:
+                        edited_user.is_superuser = True
+                        edited_user.save()
+                    else:
+                        edited_user.is_superuser = False
+                        edited_user.save()
+
+                    if active:
+                        edited_user.is_active = True
+                        edited_user.save()
+                    else:
+                        edited_user.is_active = False
+                        edited_user.save()
+
             return redirect('all_users')
 
+
+class reset_password_view(View):
+    """User can change user's password"""
+    def get(self, request, user_id):
+        form = PasswordChangeForm()
+        user = User.objects.get(pk = user_id)
+        if int(request.user.id) == int(user_id):
+            return render(request, "change_passwd.html", {"form" : form.as_p(), "user":user})
+        else:
+            return HttpResponse("Nie twoje - nie dotykaj!")
+
+    def post(self, request, user_id):
+        if int(request.user.id) == int(user_id):
+            form = PasswordChangeForm(request.POST)
+            if form.is_valid():
+                password = form.cleaned_data['password']
+                passwordRepeat = form.cleaned_data['passwordRepeat']
+                if password == passwordRepeat:
+                    user = User.objects.get(pk = user_id)
+                    user.set_password(password)
+                    user.save()
+                    user = authenticate(request, username=user.username, password=password)
+                    login(request, user)
+
+                    return HttpResponseRedirect('/home')
+
+                else:
+                    msg = "niepoprawnie potwierdzone hasło (muszą być takie same!)"
+                    return render(request, "change_passwd.html", {"form": form.as_p(), "msg": msg})
+        else:
+            return HttpResponse("Nie twoje - nie dotykaj!")

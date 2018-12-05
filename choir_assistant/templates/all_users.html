@@ -7,24 +7,44 @@
 
 {% block page_info %}
 
-    Lista utworów
+    Lista chórzystów
 
 {% endblock %}
 
 {% block content %}
 
 
+    <h3>Aktywni chórzyści:</h3>
+
+
     <ol>
 
     {% for user in users %}
 
-        <p><li><a href="../user/{{ user.id }}">{{ user.first_name }} {{ user.last_name }} ({{ user.username }}) -
-        {% if user.is_active %} aktywny {% else %} nieaktywny {% endif %}</a></li></p>
+        <p><li><a href="../user/{{ user.id }}">{{ user.first_name }} {{ user.last_name }} ({{ user.username }})</a></li></p>
 
     {% endfor %}
 
 
     </ol>
+
+<br><br><br><br><br>
+
+
+        <h3 class="inactive_users">Nieaktywni chórzyści:</h3>
+
+
+    <ol>
+
+    {% for user in inactive_users %}
+
+        <p><li><a href="../user/{{ user.id }}">{{ user.first_name }} {{ user.last_name }} ({{ user.username }})</a></li></p>
+
+    {% endfor %}
+
+
+    </ol>
+
 
 
 {% endblock %}

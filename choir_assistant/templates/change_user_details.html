@@ -36,18 +36,16 @@
             <label>Telefon użytkownika:
                 <input type="text" maxlength="20" name="phone" placeholder="{{ specific_user_ext.phone }}">
             </label><br>
-{#            {% if user.is_superuser %}#}
-{##}
-{#            <label>Nadać prawa administratora?#}
-{#                <input type="checkbox" name="admin">#}
-{#            </label><br>#}
-{##}
-{#            {% endif %}#}
+            {% if user.is_superuser %}
 
-{#            once the above works, there will have to be a button to deactivate user!#}
-{#            all users view will have to be modified to show only active users (for normal users)#}
-{#              and all users (for superuser) #}
+            <label>Nadać prawa administratora?
+                <input type="checkbox" name="admin" {% if specific_user.is_superuser %} checked {% endif %}>
+            </label><br>
+            <label>Aktywny chórzysta?
+                <input type="checkbox" name="active" {% if specific_user.is_active %} checked {% endif %}
+            </label><br>
 
+            {% endif %}
 
             <input type="submit" value="Zapisz">
         </form>

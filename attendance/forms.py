@@ -87,3 +87,7 @@ class AddSongForm(forms.Form):
                                        #            "bas1", "bas2", "bas3", "bas4"])
 
 
+
+class PasswordChangeForm(forms.Form):
+    password = forms.CharField(label="podaj hasło", max_length=50, widget=forms.PasswordInput)
+    passwordRepeat = forms.CharField(label="potwierdź hasło", max_length=50, widget=forms.PasswordInput)

@@ -7,12 +7,13 @@
 
 {% block page_info %}
 
-    Lista utworów
+    Lista nadchodzących wydarzeń
 
 {% endblock %}
 
 {% block content %}
 
+<h3>Nadchodzące wydarzenia</h3>
 
     <ol>
 
@@ -24,6 +25,25 @@
 
 
     </ol>
+
+    <br><br><br><br><br><br><br><br>
+
+
+
+<h3>Wydarzenia minione:</h3>
+
+    <ol>
+
+    {% for event in previous_events %}
+
+        <p><li><a href="../event/{{ event.id }}">{{ event.name }} ({{ event.place }})  -  {{ event.date }},  godzina {{ event.start_hour }}</a></li></p>
+
+    {% endfor %}
+
+
+    </ol>
+
+
 
 
 {% endblock %}
