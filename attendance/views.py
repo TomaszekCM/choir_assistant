@@ -385,6 +385,8 @@ class event_view(LoginRequiredMixin, View):
 
         list_of_voices = []
         songs_available_voices = {}
+        absent_voices = []
+        song_absent_voices = {}
 
         for song in event.songs.all():   # song - Song model object   - all songs on specific event
             voice_declarations = UserSong.objects.filter(song=song)  # all declarations in each song
@@ -395,16 +397,32 @@ class event_view(LoginRequiredMixin, View):
                         songs_available_voices[song.id] = list_of_voices  # here we have all available voices for each song
             list_of_voices = []
 
-        # print(songs_available_voices)
-        # for i in songs_available_voices:
-        #     print(i)
-        # for i in songs_available_voices:
-        #     print(songs_available_voices[i])
+        print(songs_available_voices)
+
+        for song in event.songs.all():
+            if song.voices:
+                for voice in song.voices:
+
+                    try:
+                        if voice not in songs_available_voices[song.id]:
+                        # print(voice)
+                            absent_voices.append(voice)
+                            song_absent_voices[song.id] = absent_voices
+                    except:
+                        pass
+                absent_voices = []
+            else:
+                pass
+
+        print(song_absent_voices)
+        # for i in song_absent_voices:
+        #     print(song_absent_voices[i])
 
         ctx = {"event": event,
                "present_users": present_users,
                "absent_users": absent_users,
                "songs_available_voices" : songs_available_voices,
+               "songs_absent": song_absent_voices
                }
 
         return render(request, "event_view.html", ctx)

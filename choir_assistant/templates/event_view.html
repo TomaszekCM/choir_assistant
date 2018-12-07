@@ -74,23 +74,26 @@
 <h2>Lista utworów:</h2>
 {%  if user.is_superuser %}<h4><a href="{{ event.pk }}/set_songs">Zmień</a></h4>{% endif %}
 <br>
-<p>{% for song in event.songs.all %}</p><br>
+<p>{% for song in event.songs.all %}
 
     {{ song.name }}
 
-{#    {% for song_voices in songs_available_voices %}#}
-{#        #}
-{#        {% for voice in song_voices %}#}
-{#        #}
-{#            {%  if song_voices[voice] in song.voices %}#}
-{#            #}
-{#                - brakuje głosu!#}
-{#                #}
-{#            {% endif %}#}
-{#            #}
-{#        {% endfor %}#}
-{#    #}
-{#    {% endfor %}#}
+    {% for i in songs_absent %}
+
+        {% if i == song.id %}
+
+{#            {% for key, value in songs_absent %}#}
+{##}
+{#                 - brakuje: {{ value }}#}
+{##}
+{#            {% endfor %}#}
+
+        {% endif %}
+
+    {% endfor %}
+
+    </p><br>
+
 
 
 {% endfor %}
