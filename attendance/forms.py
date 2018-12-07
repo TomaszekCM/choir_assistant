@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.forms import widgets
 
-from attendance.models import Song
+from attendance.models import Song, Attendance
 
 
 def login_validator(value):
@@ -91,3 +91,19 @@ class AddSongForm(forms.Form):
 class PasswordChangeForm(forms.Form):
     password = forms.CharField(label="podaj hasło", max_length=50, widget=forms.PasswordInput)
     passwordRepeat = forms.CharField(label="potwierdź hasło", max_length=50, widget=forms.PasswordInput)
+
+
+
+class AddSongsToEventForm(forms.Form):
+    songs = forms.ModelMultipleChoiceField(required=False,
+                                           widget=forms.CheckboxSelectMultiple,
+                                           queryset=Song.objects.all().order_by("name"))
+
+
+
+class DeclarationForm(forms.Form):
+    declaration = forms.ChoiceField(label= "Obecność:", choices=((0, "nie będzie"),(0.75, "spóźni się"), (1, "będzie")))
+    comment = forms.CharField(label="Komentarz", max_length=255, required=False)
+
+
+

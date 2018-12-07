@@ -34,6 +34,9 @@
 }
 
 
+    {%  block style %}
+    {% endblock %}
+
 
 </style>
 </head>
@@ -48,6 +51,7 @@
         <br><p><a href="{% url "all_events" %}">Wydarzenia</a></p>
         {% if user.is_superuser %}
             <h6><a href="/add_event">Dodaj wydarzenie</a></h6>
+{#            <h6><a href="/previous_events">Sprawdź listę</a></h6>#}
         {% endif %}
 {#        {% url 'events' %}#}
         <br><p><a href="{% url "all_songs" %}">Utwory</a></p>
@@ -60,7 +64,7 @@
             <h6><a href="/add_user">Dodaj osobę</a></h6>
         {% endif %}
 {#        {% url 'members' %}#}
-        <br><p><a href="">Moje dane</a></p>
+        <br><p><a href="/user/{{ user.id }}">Moje dane</a></p>
 {#        {% url 'profile' %}#}
 
         <br><br><br><br><br>

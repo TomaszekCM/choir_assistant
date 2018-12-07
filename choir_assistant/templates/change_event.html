@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Choir assistant - dodawanie wydarzenia
+{% endblock %}
+
+
+{% block page_info %}
+
+Edycja wydarzenia: {{ event.name }} - {{ event.date }}, {{ event.start_hour }}
+{% endblock %}
+
+{% block content %}
+
+{% if alert %}
+
+    <p>{{ alert }}</p>
+
+    {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <label>Nazwa wydarzenia:
+                <input type="text" maxlength="255" name="name" placeholder="{{ event.name }}">
+            </label><br>
+            <label>Data wydarzenia:
+                <input type="date" name="date" placeholder="{{ event.date }}">
+            </label><br>
+            <label>Godzina zbiórki:
+                <input type="time" name="start_time" placeholder="{{ event.start_hour }}">
+            </label><br>
+            <label>Przewidywana godzina zakończenia:
+                <input type="time" name="end_time" placeholder="{{ event.end_hour }}">
+            </label><br>
+            <label>Miejscce zbiórki:
+                <input type="text" maxlength="255" name="place" placeholder="{{ event.place }}">
+            </label><br>
+            <label>Opis:
+                <input type="text" name="description" placeholder="{{ event.description}}">
+            </label><br>
+
+
+            <input type="submit" value="Zapisz">
+        </form>
+
+
+{% endblock %}

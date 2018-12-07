@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 
+
+{% block style %}
+span.weak {
+    font-size: 9px;
+}
+
+{% endblock %}
+
 {% block title %}
     Choir assistant - dodawanie wydarzenia
 {% endblock %}
@@ -36,7 +44,10 @@
 
     {% for event in previous_events %}
 
-        <p><li><a href="../event/{{ event.id }}">{{ event.name }} ({{ event.place }})  -  {{ event.date }},  godzina {{ event.start_hour }}</a></li></p>
+        <p><li>{{ event.name }} ({{ event.place }})  -  {{ event.date }},  godzina {{ event.start_hour }}
+        {% if user.is_superuser %} - <a href="../event/{{ event.id }}/check"><span class="weak">sprawdź obecność</span></a> {% endif %}</li></p>
+
+{# <a href="../event/{{ event.id }}">    </a>    - due to the bug, at the moment links are unavailable    #}
 
     {% endfor %}
 

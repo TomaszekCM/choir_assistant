@@ -22,8 +22,12 @@ class Event(models.Model):
     songs = models.ManyToManyField('Song')
 
 
-DECLARATIONS = ((-2, "Nieusprawiedliwiony występ"),(-1, "Nieusprawiedliwione"),
-                                           (0, "Nie będzie"), (0.75, "Spóźni się"), (1, "Będzie)"))
+DECLARATIONS = ((-2, "nieusprawiedliwiony występ"),(-1, "nieusprawiedliwione"),
+                                           (0, "nie będzie"), (0.75, "spóźni się"), (1, "będzie"))
+
+
+# DECLARATIONS = {-2: "nieusprawiedliwiony występ", -1 : "nieusprawiedliwione",
+#                                            0: "nie będzie", 0.75: "spóźni się", 1: "będzie)"}
 
 
 class Attendance(models.Model):

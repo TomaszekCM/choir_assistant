@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Choir assistant - {{ event.name }}
+{% endblock %}
+
+{% block style %}
+
+
+.column3 {
+    float: left;
+    width: 50%;
+    padding: 10px;
+    height: 90vh; /* Should be removed. Only for demonstration */
+{#    align-items: center;#}
+{#    border-style: solid;#}
+}
+
+.column4 {
+    float: right;
+    width: 50%;
+    padding: 10px;
+    height: 90vh; /* Should be removed. Only for demonstration */
+}
+
+{% endblock %}
+
+
+
+{% block page_info %}
+
+    {{ event.name }}, {{ event.date }}  ({{ event.start_hour }} {% if event.end_hour %} - {{ event.end_hour }} {% endif %})
+    {% if event.description %}<br><h4>Opis wydarzenia: {{ event.description }}</h4>  {% endif %}
+    {% if user.is_superuser %}<br> <h5><a href="{{ event.pk }}/edit">edytuj</a>   /   <a href="{{ event.pk }}/delete">usuń</a></h5> {% endif %}
+
+{% endblock %}
+
+
+
+
+{% block content %}
+
+<div class="column3">
+
+<h2>Lista obecnych:</h2>
+<h4><a href="{{ event.id }}/declare">Zmień swoją deklarację</a></h4>
+
+
+{% for user in present_users %}<br><br>
+
+    <p><strong>{{ user.person.first_name }} {{ user.person.last_name }}</strong>
+       {% if  user.declaration == 0.75 %}
+       - {{ user.get_declaration_display }} ({{ user.comment }})
+       {% endif %}
+
+{% endfor %}
+
+
+<br><br><br><br><br>
+
+<h2>Nieobecni:</h2>
+
+{% for user in absent_users %}<br><br>
+
+    <p><strong>{{ user.person.first_name }} {{ user.person.first_name }}</strong> - {{ user.comment }}</p>
+
+{% endfor %}
+
+</div>
+
+
+<div class="column4">
+
+<h2>Lista utworów:</h2>
+{%  if user.is_superuser %}<h4><a href="{{ event.pk }}/set_songs">Zmień</a></h4>{% endif %}
+<br>
+<p>{% for song in event.songs.all %}</p><br>
+
+    {{ song.name }}
+
+{#    {% for song_voices in songs_available_voices %}#}
+{#        #}
+{#        {% for voice in song_voices %}#}
+{#        #}
+{#            {%  if song_voices[voice] in song.voices %}#}
+{#            #}
+{#                - brakuje głosu!#}
+{#                #}
+{#            {% endif %}#}
+{#            #}
+{#        {% endfor %}#}
+{#    #}
+{#    {% endfor %}#}
+
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

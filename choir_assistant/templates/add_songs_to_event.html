@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Choir assistant - dodawanie wydarzenia
+{% endblock %}
+
+
+{% block page_info %}
+
+    Ustaw utwory dla wydarzenia: {{ event.name }} - {{ event.date }}, {{ event.start_hour }}
+
+{% endblock %}
+
+{% block content %}
+
+
+
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Ustaw">
+        </form>
+
+
+{% endblock %}

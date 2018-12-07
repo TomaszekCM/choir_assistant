@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 
+{% block style %}
+span.weak {
+    font-size: 9px;
+}
+
+{% endblock %}
+
+
 {% block title %}
     Choir assistant - dodawanie wydarzenia
 {% endblock %}
@@ -18,7 +26,8 @@
 
     {% for song in all_songs %}
 
-        <p><li><a href="../song/{{ song.id }}">{{ song.name }}  ({{ song.composer }}) </a></li></p>
+        <li><a href="../song/{{ song.id }}">{{ song.name }}  ({{ song.composer }}) </a>
+        {% if user.is_superuser %} - <a href="../song/{{ song.id }}/delete"><span class="weak">usuń utwór</span></a> {% endif %}</li><br>
 
     {% endfor %}
 

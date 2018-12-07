@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Choir assistant - sprawdzanie obecności
+{% endblock %}
+
+
+{% block page_info %}
+
+    Sprawdzanie listy dla wydarzenia: {{ event.name }} - {{ event.date }}
+
+{% endblock %}
+
+{% block content %}
+
+
+
+        <form method="post">
+            {% csrf_token %}
+            {% for person in all_users %}
+
+            <p>{{ person.first_name }} {{ person.last_name }} </p><select name="{{ person.id }}">
+                <option value="8" >chwilowo nic</option>
+                <option value="1">obecny</option>
+                <option value="0.75">spóźnienie</option>
+                <option value="0">uspr. nieobecność</option>
+                <option value="-1">nieuspr. próba</option>
+                <option value="-2" >nieuspr. koncert</option>
+            </select>
+
+            <label> Komentarz
+
+            <input name="{{ person.username }}_comment" type="text" maxlength="255">
+
+            </label> {% for att in attendances %} {% if att.person_id == person.id %} {{ att.declaration }} {% if att.comment %}- {{ att.comment }} {% endif %}({{ att.date_of_declaration }}  ||  {% endif %}{% endfor %}                  <br>
+
+            {% endfor %}
+
+        <br><br><br>
+
+
+            <input type="submit" value="Zapisz">
+        </form>
+
+
+{% endblock %}

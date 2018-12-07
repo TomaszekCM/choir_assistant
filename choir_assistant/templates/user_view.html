@@ -7,8 +7,7 @@
 
 {% block page_info %}
 
-    Szczegóły utworów
-
+Moje dane
 {% endblock %}
 
 {% block content %}
@@ -29,8 +28,8 @@
 
     {% if user.id == specific_user.id or user.is_superuser %}
 
-        <h5><a href="{{ specific_user.id }}/change">Edytuj dane</a>  |
-        <a>Zmień hasło</a></h5><br>
+        <h5><a href="{{ specific_user.id }}/change">Edytuj dane</a>{% if user.id == specific_user.id %}  |
+        <a href="{{ specific_user.id }}/change_password">Zmień hasło</a>{% endif %}</h5><br>
 
 
     {% endif %}
