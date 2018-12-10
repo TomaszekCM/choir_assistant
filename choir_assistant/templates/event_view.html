@@ -82,7 +82,29 @@
 
             {% if i == song.id %}
 
-                 - brakuje następujących głosów: {{ value }}
+                 - brakuje głosów: {%  for voice in value %} {{ voice }},  {% endfor %}
+
+{#                {{ value }}#}
+
+
+
+{#                <div>#}
+{#                #}
+{#                {% for voice in song.voices %}#}
+{#                #}
+{#                    {{ voice }}:#}
+{#                    #}
+{#                    {% for user in present_users %}#}
+{#                        #}
+{#                        #}
+{#                        #}
+{#                    {% endfor %}#}
+{#                #}
+{#                {% endfor %}#}
+{#                #}
+{#                </div>#}
+
+
 
             {% endif %}
 

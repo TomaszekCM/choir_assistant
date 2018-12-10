@@ -4,6 +4,26 @@
     Choir assistant - dodawanie wydarzenia
 {% endblock %}
 
+{% block style %}
+
+
+.column3 {
+    float: left;
+    width: 50%;
+    padding: 10px;
+    height: 90vh; /* Should be removed. Only for demonstration */
+{#    align-items: center;#}
+{#    border-style: solid;#}
+}
+
+.column4 {
+    float: right;
+    width: 50%;
+    padding: 10px;
+    height: 90vh; /* Should be removed. Only for demonstration */
+}
+
+{% endblock %}
 
 {% block page_info %}
 
@@ -13,24 +33,51 @@
 
 {% block content %}
 
+    <div class="column3">
 
-    <p><h4>Tytuł:</h4> {{ song.name }} </p>
-    <p><h4>Kompozytor:</h4> {{ song.composer }} </p>
-    <p><h4>Opis:</h4> {{ song.description }} </p>
-    <p><h4>Głosy:</h4> <ul> {% for i in song.voices %} <li> {{ i }} </li> {% endfor %} </ul> </p>
+        <p><h4>Tytuł:</h4> {{ song.name }} </p>
+        <p><h4>Kompozytor:</h4> {{ song.composer }} </p>
+        <p><h4>Opis:</h4> {{ song.description }} </p>
+        <p><h4>Głosy:</h4> <ul> {% for i in song.voices %} <li> {{ i }} </li> {% endfor %} </ul> </p>
 
 
-    <br>
-    <br>
-    {%  if song.voices %}
-    {% if user_voice %}
-        <p>W tym utworze śpiewasz głosem: {{ user_voice.voice }}.</p> <h6><a href="{{ song.id }}/declare">( Zmień )</a></h6>
+        <br>
+        <br>
+        {%  if song.voices %}
+        {% if user_voice %}
+            <p>W tym utworze śpiewasz głosem: {{ user_voice.voice }}.</p> <h6><a href="{{ song.id }}/declare">( Zmień )</a></h6>
 
-    {% elif alert %}
+        {% elif alert %}
 
-        <p><a href="{{ song.id }}/declare"> {{ alert }} </a></p><br>
+            <p><a href="{{ song.id }}/declare"> {{ alert }} </a></p><br>
 
-    {% endif %}
-    {% endif %}
+        {% endif %}
+        {% endif %}
+
+
+    </div>
+
+    <div class="column4">
+
+        <h3>Poszczególne głosy:</h3><br>
+
+        {% for voice in song.voices %}
+
+            <p><strong>{{ voice }}:</strong>
+
+            {% for user in all_users %}
+
+                {%  if user.voice == voice %}
+
+                 <p>{{ user.user.first_name }} {{ user.user.last_name }}</p>
+
+                {% endif %}
+
+            {% endfor %} </p>
+
+
+        {% endfor %}
+
+    </div>
 
 {% endblock %}

@@ -166,14 +166,15 @@ class song_view(LoginRequiredMixin, View):
     def get(self, request, song_id):
         song = Song.objects.get(pk = song_id)
         user = request.user
+        all_users = UserSong.objects.filter(song=song)
 
         try:
             user_voice = UserSong.objects.filter(song_id=song_id).get(user=user)
-            return render(request, "song_view.html", {"song":song, "user_voice":user_voice})
+            return render(request, "song_view.html", {"song":song, "user_voice":user_voice, "all_users":all_users})
 
         except:
             alert = "Zadeklaruj jakim głosem śpiewasz!"
-            return render(request, "song_view.html", {"song":song, "alert":alert})
+            return render(request, "song_view.html", {"song":song, "alert":alert, "all_users":all_users})
 
 
 class song_declaration_view(LoginRequiredMixin, View):
