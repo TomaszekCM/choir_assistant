@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+
+{% block style %}
+span.weak {
+    font-size: 9px;
+}
+
+{% endblock %}
+
+{% block title %}
+    Choir assistant - dodawanie wydarzenia
+{% endblock %}
+
+
+{% block page_info %}
+
+Wydarzenie: {{ event.name }} - {{ event.date }}
+
+{% endblock %}
+
+{% block content %}
+
+<h3>Osoby + obecność</h3>
+
+    <ol>
+        {% for user in users %}
+            <li>
+                <strong>{{ user.first_name }}  {{ user.last_name }} : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>
+                    {% for declaration in declarations %}
+                        {%  if user.id == declaration.person.id %}
+
+                            {% if declaration.declaration != 8 %}
+                                {{ declaration.declaration }} - {{ declaration.date_of_declaration }} ({{ declaration.comment }})
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+{#                {% endfor %}#}
+            </li>
+        {% endfor %}
+
+    </ol>
+
+{#    #}
+{#    {% for declaration in declarations %}#}
+{##}
+{#        <p><li>{{ declaration.person.first_name }} {{ declaration.person.last_name }}  -   {{ declaration.declaration }} ({{ declaration.date_of_declaration }})</li></p>#}
+{##}
+{#    {% endfor %}#}
+
+
+{% endblock %}

@@ -144,7 +144,7 @@ class add_song_view(PermissionRequiredMixin, View):
             voices = form.cleaned_data['voices']
             Song.objects.create(name=name, composer=composer, description=description, voices=voices)
 
-            return redirect('home')
+            return redirect('all_songs')
 
         return render(request, "add_song.html", {"form": form.as_p()})
 
@@ -376,6 +376,7 @@ class event_view(LoginRequiredMixin, View):
         event = Event.objects.get(pk = event_id)
         present_users = Attendance.objects.filter(event=event).filter(declaration__gt=0.5).order_by("person__last_name")
         absent_users = Attendance.objects.filter(event=event).filter(declaration__lt=0.5).order_by("person__last_name")
+        # user_songs = UserSong.objects.all()
 
         present_users_ids = []
         for user in present_users:
@@ -400,19 +401,21 @@ class event_view(LoginRequiredMixin, View):
         print(songs_available_voices)
 
         for song in event.songs.all():
-            if song.voices:
                 for voice in song.voices:
 
                     try:
                         if voice not in songs_available_voices[song.id]:
-                        # print(voice)
                             absent_voices.append(voice)
                             song_absent_voices[song.id] = absent_voices
                     except:
                         pass
                 absent_voices = []
-            else:
-                pass
+
+        for sng in event.songs.all():
+            if sng.id not in songs_available_voices:
+                song_absent_voices[sng.id] = sng.voices
+
+
 
         print(song_absent_voices)
         # for i in song_absent_voices:
@@ -422,7 +425,8 @@ class event_view(LoginRequiredMixin, View):
                "present_users": present_users,
                "absent_users": absent_users,
                "songs_available_voices" : songs_available_voices,
-               "songs_absent": song_absent_voices
+               "songs_absent": song_absent_voices,
+               # "user_songs":user_songs
                }
 
         return render(request, "event_view.html", ctx)
@@ -604,3 +608,13 @@ class song_delete_view(PermissionRequiredMixin, View):
         else:
             HttpResponse("NAWET NIE PRÓBUJ!!!")
 
+
+class previous_event_view(LoginRequiredMixin, View):
+    login_url = 'login'
+
+    def get(self, request, event_id):
+        event = Event.objects.get(pk = event_id)
+        declarations = Attendance.objects.filter(event=event).order_by("person__last_name").order_by("-date_of_declaration")
+        users = User.objects.filter(is_active=True)
+
+        return render(request, "past_event.html", {"event":event, "declarations":declarations, "users":users})

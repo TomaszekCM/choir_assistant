@@ -62,7 +62,7 @@
 
 {% for user in absent_users %}<br><br>
 
-    <p><strong>{{ user.person.first_name }} {{ user.person.first_name }}</strong> - {{ user.comment }}</p>
+    <p><strong>{{ user.person.first_name }} {{ user.person.last_name }}</strong> - {{ user.comment }}</p>
 
 {% endfor %}
 
@@ -76,21 +76,18 @@
 <br>
 <p>{% for song in event.songs.all %}
 
-    {{ song.name }}
+    <strong>{{ song.name }}</strong>
 
-    {% for i in songs_absent %}
+        {% for i, value in songs_absent.items %}
 
-        {% if i == song.id %}
+            {% if i == song.id %}
 
-{#            {% for key, value in songs_absent %}#}
-{##}
-{#                 - brakuje: {{ value }}#}
-{##}
-{#            {% endfor %}#}
+                 - brakuje następujących głosów: {{ value }}
 
-        {% endif %}
+            {% endif %}
 
-    {% endfor %}
+        {% endfor %}
+
 
     </p><br>
 

@@ -15,7 +15,7 @@ span.weak {
 
 {% block page_info %}
 
-    Lista nadchodzących wydarzeń
+    Lista wydarzeń
 
 {% endblock %}
 
@@ -44,7 +44,7 @@ span.weak {
 
     {% for event in previous_events %}
 
-        <p><li>{{ event.name }} ({{ event.place }})  -  {{ event.date }},  godzina {{ event.start_hour }}
+        <p><li><a href="../event/previous/{{ event.id }}">{{ event.name }} ({{ event.place }})  -  {{ event.date }},  godzina {{ event.start_hour }}</a>
         {% if user.is_superuser %} - <a href="../event/{{ event.id }}/check"><span class="weak">sprawdź obecność</span></a> {% endif %}</li></p>
 
 {# <a href="../event/{{ event.id }}">    </a>    - due to the bug, at the moment links are unavailable    #}
