@@ -9,7 +9,7 @@ from django.views import View
 
 from attendance.forms import LoginForm, AddEventForm, AddUserForm, AddSongForm, PasswordChangeForm, AddSongsToEventForm, \
     DeclarationForm
-from attendance.models import Song, Event, UserExt, UserSong, Attendance
+from attendance.models import Song, Event, UserExt, UserSong, Attendance, EventSongs
 
 
 class login_view(View):
@@ -375,6 +375,7 @@ class event_view(LoginRequiredMixin, View):
 
     def get(self, request, event_id):
         event = Event.objects.get(pk = event_id)
+        event_songs = EventSongs.objects.filter(event=event_id).order_by("song_number")
         present_users = Attendance.objects.filter(event=event).filter(declaration__gt=0.5).order_by("person__last_name")
         absent_users = Attendance.objects.filter(event=event).filter(declaration__lt=0.5).order_by("person__last_name")
         # user_songs = UserSong.objects.all()
@@ -427,6 +428,7 @@ class event_view(LoginRequiredMixin, View):
                "absent_users": absent_users,
                "songs_available_voices" : songs_available_voices,
                "songs_absent": song_absent_voices,
+               "event_songs": event_songs,
                # "user_songs":user_songs
                }
 

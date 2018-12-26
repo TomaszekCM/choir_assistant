@@ -74,20 +74,20 @@
 <h2>Lista utworów:</h2>
 {%  if user.is_superuser %}<h4><a href="{{ event.pk }}/set_songs">Zmień</a></h4>{% endif %}
 <br>
-<p>{% for song in event.songs.all %}
-
-    <strong>{{ song.name }}</strong>
-
-        {% for i, value in songs_absent.items %}
-
-            {% if i == song.id %}
-
-                 - brakuje głosów: {%  for voice in value %} {{ voice }},  {% endfor %}
-
+{#<p>{% for song in event.songs.all %}#}
+{##}
+{#    <strong>{{ song.name }}</strong>#}
+{##}
+{#        {% for i, value in songs_absent.items %}#}
+{##}
+{#            {% if i == song.id %}#}
+{##}
+{#                 - brakuje głosów: {%  for voice in value %} {{ voice }},  {% endfor %}#}
+{##}
 {#                {{ value }}#}
-
-
-
+{##}
+{##}
+{##}
 {#                <div>#}
 {#                #}
 {#                {% for voice in song.voices %}#}
@@ -103,19 +103,36 @@
 {#                {% endfor %}#}
 {#                #}
 {#                </div>#}
+{##}
+{##}
+{##}
+{#            {% endif %}#}
+{##}
+{#        {% endfor %}#}
 
 
+{%  for song in event_songs %}
 
-            {% endif %}
+    <strong> {{ song.song_number }} - {{ song.song.name }} </strong>
+
+    {% for i, value in songs_absent.items %}
+
+        {% if i == song.song_id %}
+                 - brakuje głosów: {%  for voice in value %} {{ voice }},  {% endfor %}
+        {% endif %}
 
         {% endfor %}
+
+    <br><br>
+
+    {% endfor %}
 
 
     </p><br>
 
 
 
-{% endfor %}
+{#{% endfor %}#}
 
 </div>
 

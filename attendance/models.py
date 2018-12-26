@@ -19,7 +19,12 @@ class Event(models.Model):
     end_hour = models.TimeField(null=True)
     place = models.CharField(max_length=255)
     description = models.TextField(null=True)
-    songs = models.ManyToManyField('Song')
+    songs = models.ManyToManyField('Song', through= 'EventSongs')
+
+class EventSongs (models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    song = models.ForeignKey('Song', on_delete=models.CASCADE)
+    song_number = models.IntegerField()  #number of the song within the event
 
 
 DECLARATIONS = ((-2, "nieusprawiedliwiony występ"),(-1, "nieusprawiedliwione"),
