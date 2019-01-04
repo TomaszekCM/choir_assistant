@@ -24,7 +24,7 @@ class Event(models.Model):
 class EventSongs (models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     song = models.ForeignKey('Song', on_delete=models.CASCADE)
-    song_number = models.IntegerField()  #number of the song within the event
+    song_number = models.IntegerField(null=True)  #number of the song within the event
 
 
 DECLARATIONS = ((-2, "nieusprawiedliwiony występ"),(-1, "nieusprawiedliwione"),

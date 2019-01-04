@@ -14,11 +14,66 @@
 {% block content %}
 
 
-        <form method="post" class="login_class">
-            {% csrf_token %}
-            {{ form }}
-            <input type="submit" value="Dodaj wydarzenie">
-        </form>
+{#        <form method="post" class="login_class">#}
+{#            {% csrf_token %}#}
+{#            {{ form }}#}
+{#            <input type="submit" value="Dodaj wydarzenie">#}
+{#        </form>#}
+
+    <br><br><br><br><br><br>
+
+
+        <form method="post">
+        {% csrf_token %}
+        <label>Nazwa Wydarzenia:
+            <input type="text" maxlength="255" name="event_name" required>
+        </label><br><br>
+        <label>Data wydarzenia:
+            <input type="date" name="date" required>
+        </label><br><br>
+        <label>Godzina zbiórki:
+            <input type="time" name="start_hour" required>
+        </label><br><br>
+        <label>Przewidywana godzina zakończenia:
+            <input type="time" name="end_hour">
+        </label><br><br>
+        <label>Miejsce zbiórki:
+            <input type="text" name="place" maxlength="255" required>
+        </label><br><br>
+        <label>Opis wydarzenia:
+            <input type="text" name="description">
+        </label><br><br>
+        Utwory:
+            <table>
+                <tr>
+                    <td>Nazwa</td>
+                    <td>Kolejność</td>
+                </tr>
+                {% for song in all_songs %}
+                    <tr>
+                    <td><label><input type="checkbox" name="song_present_{{ song.id }}">{{ song.name }}</label></td>
+                    <td class="order_{{ song.id }}"><label><input type="number" name="song_number_{{ song.id }}" min="0"></label></td>
+                    <br>
+                    </tr>
+                {% endfor %}
+
+            </table>
+
+
+
+
+
+
+
+
+
+            <br><br><input type="submit" value="Dodaj wydarzenie">
+
+
+
+
+    </form>
+
 
 
 {% endblock %}

@@ -57,31 +57,52 @@ class add_event_view(PermissionRequiredMixin, View):
     raise_exception = True
 
     def get(self, request):
-        form = AddEventForm()
-        return render(request, "add_event.html", {"form":form.as_p()})
+        # form = AddEventForm()
+        all_songs = Song.objects.all().order_by("name")
+        return render(request, "add_event.html", {"all_songs":all_songs})
+    # "form": form.as_p(),
 
-    def post(self,request):
-        form = AddEventForm(request.POST)
-        if form.is_valid():
-            event_name = form.cleaned_data['event_name']
-            date = form.cleaned_data['date']
-            start_hour = form.cleaned_data['start_hour']
-            end_hour = form.cleaned_data['end_hour']
-            place = form.cleaned_data['place']
-            description = form.cleaned_data['description']
-            songs = form.cleaned_data['songs']
+    def post(self, request):
+        name = request.POST.get("event_name")
+        date = request.POST.get("date")
+        start_hour = request.POST.get("start_hour")
+        place = request.POST.get("place")
+        try:
+            end_hour = request.POST.get("end_hour")
+        except:
+            pass
+        try:
+            description = request.POST.get("description")
+        except:
+            pass
 
-            event = Event.objects.create(name=event_name, date=date, start_hour=start_hour, end_hour=end_hour, place=place, description=description)
-            event.songs.set(songs)
+        present_ids  = {}
+        for key in request.POST:
+            if key.startswith("song_present_") and request.POST[key]=="on":
+                song_id = int(key.split("_")[2])
+                song_number = request.POST["song_number_" + str(song_id)]
+                present_ids[song_id] = song_number
+        print(present_ids)
 
-            all_active_users = User.objects.filter(is_active=True)
+        event = Event.objects.create(name=name, date=date, start_hour=start_hour, place=place)
 
-            for user in all_active_users:
-                Attendance.objects.create(event=event, person=user)
+        if end_hour:
+            event.end_hour = end_hour
+        if description:
+            event.description = description
+        event.save()
 
-            return redirect('/all_events')
+        for key, value in present_ids.items():
+            try:
+                EventSongs.objects.create(event=event, song_id=key, song_number= value)
+            except:
+                HttpResponse("Podałeś niepoprawną kolejność do wybranych utworów")
 
-        return render(request, "add_event.html", {"form": form.as_p()})
+        all_active_users = User.objects.filter(is_active=True)
+        for user in all_active_users:
+            Attendance.objects.create(event=event, person=user)
+
+        return render(request, "add_event.html",)
 
 
 class add_user_view(PermissionRequiredMixin, View):

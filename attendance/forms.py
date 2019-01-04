@@ -79,6 +79,7 @@ class AddSongForm(forms.Form):
     description = forms.CharField(label="Opis", required=False, max_length=255)
     voices = forms.MultipleChoiceField(label="Głosy", required=False, widget=forms.CheckboxSelectMultiple,
                                        choices = VOICES)
+    # voices = forms.CharField(label="Głosy", widget=forms.Textarea)
 
 
                                        # ["soprano1", "soprano2", "soprano3", "soprano4",
