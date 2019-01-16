@@ -386,10 +386,6 @@ class reset_password_view(LoginRequiredMixin, View):
 
 
 
-
-
-
-
 class event_view(LoginRequiredMixin, View):
     """Details of the event: all available singers, all songs"""
     login_url = 'login'
@@ -397,8 +393,8 @@ class event_view(LoginRequiredMixin, View):
     def get(self, request, event_id):
         event = Event.objects.get(pk = event_id)
         event_songs = EventSongs.objects.filter(event=event_id).order_by("song_number")
-        present_users = Attendance.objects.filter(event=event).filter(declaration__gt=0.5).order_by("person__last_name")
-        absent_users = Attendance.objects.filter(event=event).filter(declaration__lt=0.5).order_by("person__last_name")
+        present_users = Attendance.objects.filter(event=event).filter(declaration__gt=0.5).filter(person__is_active=True).order_by("person__last_name")
+        absent_users = Attendance.objects.filter(event=event).filter(declaration__lt=0.5).filter(person__is_active=True).order_by("person__last_name")
         # user_songs = UserSong.objects.all()
 
         present_users_ids = []
