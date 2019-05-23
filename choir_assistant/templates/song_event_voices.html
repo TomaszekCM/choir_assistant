@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Choir assistant - {{ event.name }} - {{ song.name }}
+{% endblock %}
+
+
+{% block page_info %}
+
+    Dostępne głosy w utworze "{{ song.name }}", w trakcie wydarzenia "{{ event.name }}"
+
+{% endblock %}
+
+{% block content %}
+
+
+    {% for i, value in voices_persons.items %}
+
+        <p>
+        <h3>{{ i }}:</h3> <br>
+        {% for person in value %}
+            {{ person.first_name }} {{ person.last_name }} {% if user.id == person.id %}
+            - <a href="/song/{{ song.pk }}/declare"> zmień swoją deklarację </a> {% endif %}<br>
+        {% endfor %}
+        </p>
+    {% endfor %}
+    <br>
+
+    {% if all_declared == 0 %}
+    <p><h4>Obecne osoby, które nie zadeklarowały jakim głosem śpiewają:</h4>
+
+    {% for i in not_declared %}
+        {{ i.first_name }} {{ i.last_name }} <br>
+    {% endfor %}
+
+    </p>
+    {% endif %}
+
+    <p>
+        <a href="/event/{{ event.id }}">Powrót</a>
+    </p>
+
+
+{% endblock %}

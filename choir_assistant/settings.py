@@ -25,7 +25,10 @@ SECRET_KEY = 'a4iw_0&$r)_u1qhhs2hupi-e5z6_j2&yh@8b_w%5t1i%tix*g('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['192.168.0.227',
+#                  '127.0.0.1',
+#                  '84.10.144.255',
+#                  'kasprowy.praczyk.net']
 
 
 # Application definition
@@ -125,3 +128,13 @@ except ModuleNotFoundError:
     print("Brak konfiguracji bazy danych w pliku local_settings.py!")
     print("Uzupełnij dane i spróbuj ponownie!")
     exit(0)
+
+try:
+    from choir_assistant.local_settings import ALLOWED_HOSTS
+except ModuleNotFoundError:
+    print("Brak konfiguracji hostów")
+    exit(0)
+
+# required to upload files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

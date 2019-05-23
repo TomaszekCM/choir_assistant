@@ -113,7 +113,7 @@
 
 {%  for song in event_songs %}
 
-    <strong> {{ song.song_number }} - {{ song.song.name }} </strong>
+    <strong> {{ song.song_number }} - {{ song.song.name }} </strong> <h6><a href="/voices/{{ event.id }}/{{ song.song_id }}">dostępne głosy - osoby</a></h6>
 
     {% for i, value in songs_absent.items %}
 

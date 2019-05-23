@@ -98,11 +98,12 @@ class add_event_view(PermissionRequiredMixin, View):
             except:
                 HttpResponse("Podałeś niepoprawną kolejność do wybranych utworów")
 
-        all_active_users = User.objects.filter(is_active=True)
-        for user in all_active_users:
-            Attendance.objects.create(event=event, person=user)
+        # all_active_users = User.objects.filter(is_active=True)
+        # for user in all_active_users:
+        #     Attendance.objects.create(event=event, person=user)
 
-        return render(request, "add_event.html",)
+        return redirect('all_events')
+        # return render(request, "add_event.html",)
 
 
 class add_user_view(PermissionRequiredMixin, View):
@@ -163,7 +164,11 @@ class add_song_view(PermissionRequiredMixin, View):
             composer = form.cleaned_data['composer']
             description = form.cleaned_data['description']
             voices = form.cleaned_data['voices']
-            Song.objects.create(name=name, composer=composer, description=description, voices=voices)
+            link = form.cleaned_data['yt_link']
+
+            link = link[32:]
+
+            Song.objects.create(name=name, composer=composer, description=description, voices=voices, yt_link=link)
 
             return redirect('all_songs')
 
@@ -564,16 +569,23 @@ class change_declaration_view(LoginRequiredMixin, View):
         if form.is_valid():
             declaration = form.cleaned_data['declaration']
             comment = form.cleaned_data['comment']
-            attendance = Attendance.objects.filter(event=event).get(person=user)
+            try:
+                attendance = Attendance.objects.filter(event=event).get(person=user)
 
-            if declaration:
-                attendance.declaration = form.cleaned_data['declaration']
-                attendance.date_of_declaration = datetime.now()
-                attendance.save()
-            if comment:
-                attendance.comment = form.cleaned_data['comment']
-                attendance.date_of_declaration = datetime.now()
-                attendance.save()
+                if declaration:
+                    attendance.declaration = form.cleaned_data['declaration']
+                    attendance.date_of_declaration = datetime.now()
+                    attendance.save()
+                if comment:
+                    attendance.comment = form.cleaned_data['comment']
+                    attendance.date_of_declaration = datetime.now()
+                    attendance.save()
+
+            except:
+                attendance = Attendance.objects.create(event = event, person = user, declaration = declaration)
+                if comment:
+                    attendance.comment = comment
+                    attendance.save()
 
             return HttpResponseRedirect("/event/%s" %event.id)
 
@@ -638,3 +650,47 @@ class previous_event_view(LoginRequiredMixin, View):
         users = User.objects.filter(is_active=True)
 
         return render(request, "past_event.html", {"event":event, "declarations":declarations, "users":users})
+
+
+def song_event_voices(request, event_id, song_id):
+
+    event = Event.objects.get(pk = event_id)
+    song = Song.objects.get(pk = song_id)
+    present_members = Attendance.objects.filter(event = event).filter(declaration__gt = 0.5)
+    voices = UserSong.objects.filter(song = song)
+    available_voices = []
+    present_singers =  []
+    available_voices_full_list = {}
+    not_declared = []
+
+    for i in present_members:
+        present_singers.append(i.person)
+
+    for i in voices:
+        if i.user in present_singers:
+            if i.voice not in available_voices:
+                available_voices.append(i.voice)
+
+    for i in available_voices:
+        list = []
+        for a in present_singers:
+            try:
+                if voices.get(user=a).voice == i:
+                    list.append(a)
+            except:
+                if a not in not_declared:
+                    not_declared.append(a)
+        available_voices_full_list[i] = list
+
+    all_declared = 0
+    if len(not_declared) == 0:
+        all_declared = 1
+
+    context = {"event": event,
+               "song": song,
+               "voices_persons" : available_voices_full_list,
+               "not_declared": not_declared,
+               "all_declared": all_declared,
+               }
+
+    return render(request, "song_event_voices.html", context)

@@ -16,11 +16,13 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 from attendance.views import login_view, logout_view, home_view, add_event_view, add_user_view, add_song_view, \
     all_songs_vies, song_view, song_declaration_view, all_users_view, current_events_view, user_view, \
     user_details_change_view, reset_password_view, event_view, event_delete_view, event_set_songs_view, edit_event_view, \
-    change_declaration_view, prvious_event_check_view, song_delete_view, previous_event_view
+    change_declaration_view, prvious_event_check_view, song_delete_view, previous_event_view, song_event_voices
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -45,6 +47,12 @@ urlpatterns = [
     url(r'^event/(?P<event_id>(\d)+)/declare$', change_declaration_view.as_view()),
     url(r'^event/(?P<event_id>(\d)+)/check$', prvious_event_check_view.as_view()),
     url(r'^song/(?P<song_id>(\d)+)/delete$', song_delete_view.as_view()),
-    url(r'^event/previous/(?P<event_id>(\d)+)$', previous_event_view.as_view())
+    url(r'^event/previous/(?P<event_id>(\d)+)$', previous_event_view.as_view()),
+    url(r'^voices/(?P<event_id>(\d)+)/(?P<song_id>(\d+))', song_event_voices),
 
 ]
+
+# required to upload files
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

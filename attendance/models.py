@@ -70,3 +70,7 @@ class UserSong(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
     voice = models.CharField(choices=VOICES, max_length=255)   # user will be allowed to use only one of the voices. Form will contain only choices from the Song model.
+
+class SongFiles(models.Model):
+    song = models.ForeignKey(Song, on_delete=models.CASCADE)
+    file = models.FileField()

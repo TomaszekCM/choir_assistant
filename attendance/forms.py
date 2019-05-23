@@ -75,7 +75,7 @@ class AddSongForm(forms.Form):
     name = forms.CharField(label="Nazwa utworu", max_length=255)
     composer = forms.CharField(label="Kompozytor", max_length=255, required=False)
     # scores = forms.FileField(label="Nuty", required=False)
-    # yt_link = forms.CharField(label="Link do youtybe'a", widget=forms.Textarea, required=False)
+    yt_link = forms.CharField(label="Link do youtybe'a",required=False)
     description = forms.CharField(label="Opis", required=False, max_length=255)
     voices = forms.MultipleChoiceField(label="Głosy", required=False, widget=forms.CheckboxSelectMultiple,
                                        choices = VOICES)

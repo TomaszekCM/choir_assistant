@@ -1,0 +1,83 @@
+- Edycja piosenek w wydarzeniu - póki co nie działa
+
+- Piosenki bez kolejności też muszą się dodawać (tylko wtedy np wyświetlać na końcu - bo często nie potrzeba kolejności wpisywać na próbę)
+
+- Znaleźć dlaczego nie można skomentować swojej obecności na wydarzeniu, a można nieobecność lub spóźnienie (to na pewno
+jakieś ręcznie założone ograniczenie, które jednak nie jest w 100% poprawne, bo ktoś może napisać, że będzie, ale
+że nie może śpiewać, bo ma chore gardło i tylko będzie słuchał i sie uczył
+
+- dodając utwór głosy powinny być definiowane przez użytkownika (a nie wybierane z listy)! (będzie to lepiej wyglądać, a i uelastyczni całość)
+
+- dodawanie plików z nutami oraz linków do yt
+
+- całość ze sprawdzaniem listy (również rozdzielenie na wydarzenia ważne - za 2 pkt - i te nieważne, za 1)
+
+- wygląd całości, bo póki co to wygląda jak ścierwo najgorsze
+
+- docelowo listę z głosami w wydarzeniu w konkretnym utworze zrobić na widoku wydarzenia i opakować to java scriptem,
+żeby się wysuwało (i chowało) po kliknięciu na utwór (no i dodać "event", który po najechaniu na nazwę wyświetli
+okienko z podpowiedzią, że kliknięcie spowoduje rozwinięcie się listy.
+
+- TESTY!!!!!
+
+- Admin Panel
+
+- Zaimplementować jakiś kalendarz, zamiast zwykłej listy wydarzeń
+
+- edycja piosenek
+
+- usuwanie utworów -> dodatkowa strona/okno z pytaniem "napewno?"
+
+
+
+
+
+
+estem niezwykle ucieszony Twoim pomysłem. 2 lata temu prosiłem kogoś na SGH by stworzył taką platformę, ale spełzło to na niczym, bo zaspokajało nas narzędzie wiki groups. Poniżej wrzucam pomysły, które mi się urodziły w związku z Twoim przedsięwzięciem.
+Profil chórzysty:
+
+- logowanie przy użyciu hasła  -  JEST
+
+- obecny stan spóźnień i nieobecności
+
+- dział Emisja, gdzie uwagi wpisywałby Przemek oraz dyrygenci
+
+- Kalendarz wydarzeń i prób na cały rok
+
+Dział Repertuar:
+
+- dział w którym znajdowałyby się wszystkie nasze utwory oraz ich skany pdf. Tutaj niech Franek się wypowie, czy dopuszcza dostęp do wszystkich nut z naszego repertuaru. Jeśli ktoś chciałby udostępnić je osobom trzecim musiałby pobierać jeden po drugim, a nie w formie podania linka. Uważam to za niezłe zabezpieczenie.
+
+- obecnie Franek zainicjował wykaz wszystkich utworów CM.
+https://docs.google.com/spreadsheets/d/1IShsfUOfLhjV36iSW96AKBI_ZWBo9XXL_8D8_N4vBOE/edit?usp=sharing
+Są tutaj dziedziny wszystkie: TYTUŁ, KOMPOZYTOR, LATA ŻYCIA, CZAS TRWANIA, UWAGI, TEMATYKA
+
+- do każdego utworu dodałbym OBSADĘ na głosy, gdzie każdy mógłby się określić czym śpiewa. Na chwilę obecną można przepisać z tej bazy danych.
+https://docs.google.com/spreadsheets/d/1R-H6MQEs8M6CdbWlgraiGc_v-_p_ztNH0X3J6YdWdOk/edit?usp=sharing   - JEST
+
+- do każdego utworu dołączone byłby materiały do nauki jeśli takie powstały. Obecnie są w tym pliku -
+https://drive.google.com/open?id=0B4ubuYlXPeoybWFOR3lxZXR3UlU
+
+Wydarzenie:
+- wszystkie spotkania chóru: próby, koncerty, wspólne zabawy, nagrania, wyjazdy koncertowe i rekreacyjne.
+
+- data, początek i koniec wydarzenia (ze zbiórką)  - JEST
+
+- miejsce z adresem (mapka google?)  - JEST
+
+- obecności do wypełnienia przez chórzystów (tak/nie/nie wiem, ale się postaram)
+
+- wykaz utworów (połączony z działem repertuar)  - JEST
+
+- przy utworach widoczne byłoby od razu ile jakich głosów jest dostępnych w zależności od zdeklarowanych obecności
+
+- osoby odpowiedzialne za poszczególne funkcje: rozłożenie programów, sprzedaż płyt, nagranie audio, nagranie video, zdjęcia.
+
+Ankiety:
+
+- dział o którego potrzebie istnienia nie jestem przekonany. Można by tu zasięgać opinii chórzystów odnośnie zakupu koszulek, terminów dłuższych wyjazdów lub propozycji terminów koncertów. Wtedy dział Wydarzenia jest święty i cokolwiek tam wpisane jest pewne na 100%. Żadnych spekulacji, które właśnie będzie można uprawiać w dziale Ankiety.
+
+
+Myślę, że jeszcze coś mi wpadnie do głowy z upływem czasu. Zachęcam także do dzielenia się pomysłami przez pozostałych.
+Pozdrawiam,
+K
